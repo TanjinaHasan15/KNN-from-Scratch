@@ -115,3 +115,41 @@ def run_news_custom():
     print("Precision:", [round(p, 2) for p in prec])
     print("Recall:   ", [round(r, 2) for r in rec])
     print("F1-Score: ", [round(f, 2) for f in f1])
+
+    # ---  KNN on News Dataset ---
+def run_news_sklearn():
+    news_data = [
+        ("The government passed a new economic bill in the parliament today.", "politics"),
+        ("The local team won the championship after a thrilling final match.", "sports"),
+        ("Prime Minister addressed the nation regarding the budget changes.", "politics"),
+        ("Star striker scored a hat-trick in the international friendly.", "sports"),
+        ("Election campaigns are heating up across the major states.", "politics"),
+        ("The national cricket team starts their tour next week.", "sports"),
+        ("A controversial bill sparked debates in the Senate.", "politics"),
+        ("The tennis tournament drew record attendance this year.", "sports"),
+        ("Foreign policies are being restructured by the new cabinet.", "politics"),
+        ("Fans celebrated wildly after their team’s last-minute win.", "sports")
+    ]
+    texts, labels = zip(*news_data)
+    labels_num = [0 if label == "politics" else 1 for label in labels]
+
+    vectorizer = TfidfVectorizer()
+    X = vectorizer.fit_transform(texts).toarray()
+    y = np.array(labels_num)
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+    model = KNeighborsClassifier(n_neighbors=3)
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+
+    acc = sk_acc(y_test, y_pred)
+    cm = sk_cm(y_test, y_pred)
+    prec, rec, f1, _ = precision_recall_fscore_support(y_test, y_pred, zero_division=0)
+
+    print("\nScikit-learn KNN on News Dataset:")
+    print(f"Accuracy: {round(acc, 2)}")
+    print("Confusion Matrix:\n", cm)
+    print("Precision:", [round(p, 2) for p in prec])
+    print("Recall:   ", [round(r, 2) for r in rec])
+    print("F1-Score: ", [round(f, 2) for f in f1])
