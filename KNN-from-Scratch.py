@@ -116,7 +116,7 @@ def run_news_custom():
     print("Recall:   ", [round(r, 2) for r in rec])
     print("F1-Score: ", [round(f, 2) for f in f1])
 
-    # ---  KNN on News Dataset ---
+    # --- Run scikit-learn KNN on News Dataset ---
 def run_news_sklearn():
     news_data = [
         ("The government passed a new economic bill in the parliament today.", "politics"),
@@ -153,3 +153,9 @@ def run_news_sklearn():
     print("Precision:", [round(p, 2) for p in prec])
     print("Recall:   ", [round(r, 2) for r in rec])
     print("F1-Score: ", [round(f, 2) for f in f1])
+
+    # --- Main ---
+if __name__ == "__main__":
+    run_iris()
+    run_news_custom()
+    run_news_sklearn()
